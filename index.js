@@ -189,7 +189,8 @@ var Profile = function (bucketName, f) {
   if (! enabled)
     return f;
 
-  return function (...args) {
+  return function () {
+    var args = arguments;
     if (! running)
       return f.apply(this, args);
 
