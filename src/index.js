@@ -381,6 +381,10 @@ var report = function () {
   if (! enabled)
     return;
   running = false;
+  reportWithoutStopping();
+};
+
+var reportWithoutStopping = function () {
   print(0, '');
   setupReport();
   reportHierarchy();
@@ -398,10 +402,15 @@ var run = function (bucketName, f) {
   }
 };
 
+var runContinuously = function () {
+  start();
+  setInterval(reportWithoutStopping, 10000);
+};
+
 Profile.time = time;
 Profile.run = run;
+Profile.runContinuously = runContinuously;
 Profile.increase = increase;
-Profile.report = report;
 
 exports.Profile = Profile;
 
