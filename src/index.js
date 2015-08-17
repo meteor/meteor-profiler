@@ -169,6 +169,9 @@ var enabled = !! process.env['METEOR_PROFILE'];
 var filter = ~~process.env['METEOR_PROFILE'] || 100; // ms
 
 var bucketTimes = {};
+// a copy of `bucketTimes`, with additional "other ..."
+// leafs. computed by setupReport()
+var bucketTimesAndOther = {};
 
 var spaces = function (x) {
   var s = '';
@@ -183,6 +186,7 @@ var running = false;
 
 var start = function () {
   bucketTimes = {};
+  bucketTimesAndOther = {};
   running = true;
 };
 
@@ -258,7 +262,7 @@ var entryName = function (entry) {
 };
 
 var entryTime = function (entry) {
-  return bucketTimes[JSON.stringify(entry)];
+  return bucketTimesAndOther[JSON.stringify(entry)];
 };
 
 var isTopLevelEntry = function (entry) {
@@ -311,7 +315,7 @@ var injectOtherTime = function (entry) {
   var name = "other " + entryName(entry);
   var other = _.clone(entry);
   other.push(name);
-  bucketTimes[JSON.stringify(other)] = otherTime(entry);
+  bucketTimesAndOther[JSON.stringify(other)] = otherTime(entry);
   entries.push(other);
 };
 
@@ -372,6 +376,7 @@ var reportTotals = function () {
 
 var setupReport = function () {
   entries = _.map(_.keys(bucketTimes), JSON.parse);
+  bucketTimesAndOther = _.clone(bucketTimes);
   _.each(_.filter(entries, hasChildren), function (parent) {
     injectOtherTime(parent);
   });
