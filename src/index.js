@@ -412,6 +412,10 @@ var run = function (bucketName, f) {
 };
 
 var runContinuously = function () {
+  if (!enabled) {
+    return;
+  }
+
   start();
   setInterval(reportWithoutStopping, 10000);
 };
