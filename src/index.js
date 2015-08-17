@@ -401,6 +401,7 @@ var run = function (bucketName, f) {
 Profile.time = time;
 Profile.run = run;
 Profile.increase = increase;
+Profile.report = report;
 
 exports.Profile = Profile;
 
