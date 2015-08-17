@@ -37,4 +37,4 @@ class Timer {
   }
 };
 
-exports.Timer = Timer;
+module.exports = Timer;

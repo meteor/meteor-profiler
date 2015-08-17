@@ -225,10 +225,10 @@ var Profile = function (bucketName, f) {
     }
     finally {
       timer.stop();
-      if (timer !== Fiber.current.timers.pop()) {
+      if (Fiber.current && timer !== Fiber.current.timers.pop()) {
         throw new Error("unexpected timer at top of stack");
       }
-      count(currentEntry, timer.totalMs());
+      increase(currentEntry, timer.totalMs());
       currentEntry.pop();
     }
 
