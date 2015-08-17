@@ -213,7 +213,7 @@ var Profile = function (bucketName, f) {
     }
     currentEntry.push(name);
 
-    var timer = new Timer;
+    var timer = new Timer(JSON.stringify(currentEntry));
     if (Fiber.current) {
       Fiber.current.timers = Fiber.current.timers || [];
       Fiber.current.timers.push(timer);
@@ -229,8 +229,13 @@ var Profile = function (bucketName, f) {
     }
     finally {
       timer.stop();
-      if (Fiber.current && timer !== Fiber.current.timers.pop()) {
-        throw new Error("unexpected timer at top of stack");
+      if (Fiber.current) {
+        var poppedTimer = Fiber.current.timers.pop();
+        if (timer !== poppedTimer) {
+          throw new Error(
+            "unexpected timer at top of stack: " + poppedTimer.id +
+              "; expected: " + timer.id);
+        }
       }
       increase(currentEntry, timer.totalMs());
       currentEntry.pop();

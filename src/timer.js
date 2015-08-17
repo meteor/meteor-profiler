@@ -13,7 +13,7 @@ class Timer {
 
   start() {
     if (this.running) {
-      throw new Error("can't start a running timer");
+      throw new Error("can't start a running timer: " + this.id);
     }
 
     this._startHrTime = process.hrtime();
@@ -22,7 +22,7 @@ class Timer {
 
   stop() {
     if (!this.running) {
-      throw new Error("can't stop a stopped timer");
+      throw new Error("can't stop a stopped timer: " + this.id);
     }
 
     var durationHrtime = process.hrtime(this._startHrTime);
