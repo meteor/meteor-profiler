@@ -4,12 +4,18 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "cd src && ../node_modules/.bin/babel *.js -d ../lib/"
+    "test": "mocha",
+    "compile": "cd src && babel *.js -d ../lib/"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.8.21"
+    "babel": "^5.8.21",
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "fibers": "^1.0.6",
+    "underscore": "^1.8.3"
   }
 }
