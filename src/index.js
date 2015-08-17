@@ -245,6 +245,10 @@ var time = function (bucket, f) {
 };
 
 var increase = function (entry, durationMs) {
+  if (!enabled) {
+    return;
+  }
+
   if (!_.isArray(entry)) {
     entry = [entry];
   }
