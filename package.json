@@ -1,11 +1,15 @@
 {
   "name": "meteor-profiler",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "cd src && ../node_modules/.bin/babel *.js -d ../lib/"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.21"
+  }
 }
