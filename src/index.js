@@ -163,6 +163,7 @@
 
 var _ = require('underscore');
 var Fiber = require('fibers');
+var Timer = require('./timer');
 
 var enabled = !! process.env['METEOR_PROFILE'];
 var filter = ~~process.env['METEOR_PROFILE'] || 100; // ms
@@ -206,14 +207,15 @@ var Profile = function (bucketName, f) {
     } else {
       currentEntry = globalEntry;
     }
-
     currentEntry.push(name);
-    // xcxc use timers here:
-    // - move timer into npm package
-    //   - de-ES6-ify it
-    //   - or better yet, pre-compile it when you publish
-    // - use timers here instead of measuring time directly.
-    var start = process.hrtime();
+
+    var timer = new Timer;
+    if (Fiber.current) {
+      Fiber.current.timers = Fiber.current.timers || [];
+      Fiber.current.timers.push(timer);
+    }
+    timer.start();
+
     var err = null;
     try {
       return f.apply(this, args);
@@ -222,8 +224,11 @@ var Profile = function (bucketName, f) {
       err = e;
     }
     finally {
-      var elapsed = process.hrtime(start);
-      count(currentEntry, elapsed[0] * 1000 + elapsed[1] / 1000000);
+      timer.stop();
+      if (timer !== Fiber.current.timers.pop()) {
+        throw new Error("unexpected timer at top of stack");
+      }
+      count(currentEntry, timer.totalMs());
       currentEntry.pop();
     }
 
@@ -399,6 +404,3 @@ Profile.increase = increase;
 
 exports.Profile = Profile;
 
-
-// xcxc:
-// - split this up into files.
