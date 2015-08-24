@@ -213,9 +213,13 @@ var Profile = function (bucketName, f) {
     }
     currentEntry.push(name);
 
-    var timer = new Timer(JSON.stringify(currentEntry), durationMs => {
-      increase(currentEntry, durationMs);
-    });
+    // need to clone so that the `onStopped` closure refers to the
+    // value of `currentEntry` at this point of time.
+    var timerCurrentEntry = _.clone(currentEntry);
+    var timer = new Timer(
+      /*id=*/ JSON.stringify(currentEntry),
+      /*onStopped=*/ durationMs => { increase(timerCurrentEntry, durationMs); });
+
     if (Fiber.current) {
       Fiber.current.timers = Fiber.current.timers || [];
       Fiber.current.timers.push(timer);
