@@ -213,7 +213,9 @@ var Profile = function (bucketName, f) {
     }
     currentEntry.push(name);
 
-    var timer = new Timer(JSON.stringify(currentEntry));
+    var timer = new Timer(JSON.stringify(currentEntry), durationMs => {
+      increase(currentEntry, durationMs);
+    });
     if (Fiber.current) {
       Fiber.current.timers = Fiber.current.timers || [];
       Fiber.current.timers.push(timer);
@@ -237,7 +239,6 @@ var Profile = function (bucketName, f) {
               "; expected: " + timer.id);
         }
       }
-      increase(currentEntry, timer.totalMs());
       currentEntry.pop();
     }
 

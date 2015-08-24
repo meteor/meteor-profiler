@@ -5,10 +5,12 @@
 // Call the `start()` and `stop()` methods appropriately, then call
 // `totalMs()` to get the total duration for all segments.
 class Timer {
-  constructor(id) {
+  // @param onStopped {Function(durationMs)}
+  constructor(id, onStopped) {
     this.id = id;
     this.running = false;
     this._totalMs = 0;
+    this._onStopped = onStopped;
   }
 
   start() {
@@ -26,14 +28,10 @@ class Timer {
     }
 
     var durationHrtime = process.hrtime(this._startHrTime);
-    this._totalMs += durationHrtime[0] * 1000 + durationHrtime[1] / 1000000;
+    this._onStopped(durationHrtime[0] * 1000 + durationHrtime[1] / 1000000);
 
     delete this._startHrTime;
     this.running = false;
-  }
-
-  totalMs() {
-    return this._totalMs;
   }
 };
 
