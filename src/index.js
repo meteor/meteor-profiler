@@ -166,7 +166,7 @@ var Fiber = require('fibers');
 var Timer = require('./timer');
 
 var enabled = !! process.env['METEOR_PROFILE'];
-var filter = ~~process.env['METEOR_PROFILE'] || 100; // ms
+var filter = ~~process.env['METEOR_PROFILE'] || 10; // ms
 
 var bucketTimes = {};
 // a copy of `bucketTimes`, with additional "other ..."
