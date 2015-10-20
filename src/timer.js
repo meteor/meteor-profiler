@@ -16,7 +16,7 @@ class Timer {
   }
 
   start() {
-    if (this.id === '["analyze oplog entry"]') {
+    if (this.id === '["process ddp message"]') {
       console.trace("start");
     }
 
@@ -30,7 +30,7 @@ class Timer {
   }
 
   stop() {
-    if (this.id === '["analyze oplog entry"]') {
+    if (this.id === '["process ddp message"]') {
       console.trace("stop");
     }
 
