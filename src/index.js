@@ -230,23 +230,18 @@ var Profile = function (bucketName, f) {
     try {
       return f.apply(this, args);
     }
-    catch (e) {
-      err = e;
-    }
     finally {
       timer.stop();
       if (Fiber.current) {
         var poppedTimer = Fiber.current.timers.pop();
         if (timer !== poppedTimer) {
-          throw new Error(
+          console.error(
             "unexpected timer at top of stack: " + poppedTimer.id +
               "; expected: " + timer.id);
         }
       }
       currentEntry.pop();
     }
-
-    if (err) throw err;
   };
 };
 

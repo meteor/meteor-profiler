@@ -32,7 +32,7 @@ class Timer {
     var durationCPUTimeMs = 1000 * (getrusage.getcputime() - this._startCPUTimeMs);
     this._onStopped(durationCPUTimeMs);
 
-    delete this._startHrTime;
+    delete this._startCPUTimeMs;
     this.running = false;
   }
 };
