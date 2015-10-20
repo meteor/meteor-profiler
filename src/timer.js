@@ -27,6 +27,7 @@ class Timer {
 
   stop() {
     if (!this.running) {
+      return;
       console.trace("can't stop a stopped timer: " + this.id);
       process.exit(1);
     }
