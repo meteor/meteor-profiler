@@ -16,6 +16,10 @@ class Timer {
   }
 
   start() {
+    if (this.id === '["analyze oplog entry"]') {
+      console.trace("start");
+    }
+
     if (this.running) {
       throw new Error("can't start a running timer: " + this.id);
     }
@@ -25,6 +29,10 @@ class Timer {
   }
 
   stop() {
+    if (this.id === '["analyze oplog entry"]') {
+      console.trace("stop");
+    }
+
     if (!this.running) {
       throw new Error("can't stop a stopped timer: " + this.id);
     }
