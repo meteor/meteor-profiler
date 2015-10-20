@@ -1,3 +1,5 @@
+var getrusage = require('getrusage');
+
 // The `Timer` class lets you easily measure durations of time
 // consisting of multiple segments. Uses the nanosecond-resolution
 // `process.hrtime()`.
@@ -18,7 +20,7 @@ class Timer {
       throw new Error("can't start a running timer: " + this.id);
     }
 
-    this._startHrTime = process.hrtime();
+    this._startCPUTimeMs = getrusage.getcputime();
     this.running = true;
   }
 
@@ -27,8 +29,8 @@ class Timer {
       throw new Error("can't stop a stopped timer: " + this.id);
     }
 
-    var durationHrtime = process.hrtime(this._startHrTime);
-    this._onStopped(durationHrtime[0] * 1000 + durationHrtime[1] / 1000000);
+    var durationCPUTimeMs = 1000 * (getrusage.getcputime() - this._startCPUTimeMs);
+    this._onStopped(durationCPUTimeMs);
 
     delete this._startHrTime;
     this.running = false;

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "fibers": "^1.0.6",
+    "getrusage": "^1.0.0",
     "underscore": "^1.8.3"
   }
 }
