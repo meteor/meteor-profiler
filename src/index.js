@@ -183,7 +183,7 @@ var spaces = function (x) {
   return s;
 };
 
-var globalEntry = [];
+var globalEntry = new Array(4);
 
 var running = false;
 
@@ -214,7 +214,7 @@ var Profile = function (bucketName, f) {
     var currentEntry;
     if (Fiber.current) {
       currentEntry =
-        Fiber.current.profilerEntry || (Fiber.current.profilerEntry = []);
+        Fiber.current.profilerEntry || (Fiber.current.profilerEntry = new Array(4));
     } else {
       currentEntry = globalEntry;
     }
@@ -228,7 +228,7 @@ var Profile = function (bucketName, f) {
       /*onStopped=*/ durationMs => { increase(timerCurrentEntry, durationMs); });
 
     if (Fiber.current) {
-      Fiber.current.timers = Fiber.current.timers || [];
+      Fiber.current.timers = Fiber.current.timers || new Array(4);
       Fiber.current.timers.push(timer);
     }
     timer.start();
