@@ -16,10 +16,6 @@ class Timer {
   }
 
   start() {
-    if (this.id === '["process ddp message"]') {
-      console.trace("start");
-    }
-
     if (this.running) {
       console.trace("can't start a running timer: " + this.id);
       process.exit(1);
@@ -30,10 +26,6 @@ class Timer {
   }
 
   stop() {
-    if (this.id === '["process ddp message"]') {
-      console.trace("stop");
-    }
-
     if (!this.running) {
       console.trace("can't stop a stopped timer: " + this.id);
       process.exit(1);
