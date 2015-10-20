@@ -1,6 +1,6 @@
 // Tiny profiler
 //
-// Enable by setting the environment variable `METEOR_PROFILE`.
+// Enable by setting the environment variable `METEOR_PROFILE_SERVER`.
 //
 // The main entry point is `Profile`, which wraps an existing function
 // and returns a new function which, when called, calls the original
@@ -22,8 +22,8 @@
 // indentation of the wrapped code, which makes merging changes from
 // other code branches easier.
 //
-// If profiling is disabled (if `METEOR_PROFILE` isn't set), `Profile`
-// simply returns the original function.
+// If profiling is disabled (if `METEOR_PROFILE_SERVER` isn't set),
+// `Profile` simply returns the original function.
 //
 // To run a profiling session and print the report, call `Profile.run`:
 //
@@ -165,8 +165,8 @@ var _ = require('underscore');
 var Fiber = require('fibers');
 var Timer = require('./timer');
 
-var enabled = !! process.env['METEOR_PROFILE'];
-var filter = ~~process.env['METEOR_PROFILE'] || 10; // ms
+var enabled = !! process.env['METEOR_PROFILE_SERVER'];
+var filter = ~~process.env['METEOR_PROFILE_SERVER'] || 10; // ms
 
 var bucketTimes = {};
 // a copy of `bucketTimes`, with additional "other ..."
