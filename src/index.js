@@ -393,7 +393,7 @@ var reportTotals = function () {
     print(0, total.name + ": " + total.time.toFixed(1));
     grandTotal += total.time;
   });
-  print(0, "Total: " + grandTotal.toFixed(1));
+  print(0, "Measured CPU: " + grandTotal.toFixed(1));
 };
 
 var setupReport = function () {
