@@ -436,6 +436,7 @@ var stop = function () {
 
   printToBuffer = [];
   report();
+  running = false;
   var result = printToBuffer.join("\n");
   printToBuffer = null;
   return result;
