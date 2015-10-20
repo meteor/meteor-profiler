@@ -173,6 +173,9 @@ var bucketTimes = {};
 // leafs. computed by setupReport()
 var bucketTimesAndOther = {};
 
+// if this is set to an array, it will collect log lines.
+var printToBuffer = null;
+
 var spaces = function (x) {
   var s = '';
   for (var i = 0;  i < x;  ++i)
@@ -185,6 +188,10 @@ var globalEntry = [];
 var running = false;
 
 var start = function () {
+  if (running) {
+    throw new Error("Already running");
+  }
+
   bucketTimes = {};
   bucketTimesAndOther = {};
   running = true;
@@ -284,7 +291,12 @@ var topLevelEntries = function () {
 };
 
 var print = function (indent, text) {
-  console.log(prefix + spaces(indent * 2) + text);
+  var line = prefix + spaces(indent * 2) + text;
+  if (printToBuffer) {
+    printToBuffer.push(line);
+  } else {
+    console.log(line);
+  }
 };
 
 var isChild = function (entry1, entry2) {
@@ -417,18 +429,22 @@ var run = function (bucketName, f) {
   }
 };
 
-var runContinuously = function () {
-  if (!enabled) {
-    return;
+var stop = function () {
+  if (!running) {
+    throw new Error("not running");
   }
 
-  start();
-  setInterval(reportWithoutStopping, 10000);
-};
+  printToBuffer = [];
+  report();
+  var result = printToBuffer.join("\n");
+  printToBuffer = null;
+  return result;
+}
 
 Profile.time = time;
 Profile.run = run;
-Profile.runContinuously = runContinuously;
+Profile.start = start;
+Profile.stop = stop;
 Profile.increase = increase;
 
 exports.Profile = Profile;
