@@ -21,10 +21,11 @@ class Timer {
     }
 
     if (this.running) {
-      throw new Error("can't start a running timer: " + this.id);
+      console.trace("can't start a running timer: " + this.id);
+      process.exit(1);
     }
 
-    this._startCPUTimeMs = getrusage.getcputime();
+    this._startCPUTimeSecs = getrusage.getcputime();
     this.running = true;
   }
 
@@ -34,13 +35,14 @@ class Timer {
     }
 
     if (!this.running) {
-      throw new Error("can't stop a stopped timer: " + this.id);
+      console.trace("can't stop a stopped timer: " + this.id);
+      process.exit(1);
     }
 
-    var durationCPUTimeMs = 1000 * (getrusage.getcputime() - this._startCPUTimeMs);
+    var durationCPUTimeMs = 1000 * (getrusage.getcputime() - this._startCPUTimeSecs);
     this._onStopped(durationCPUTimeMs);
 
-    delete this._startCPUTimeMs;
+    delete this._startCPUTimeSecs;
     this.running = false;
   }
 };

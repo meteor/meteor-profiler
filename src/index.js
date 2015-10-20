@@ -235,9 +235,10 @@ var Profile = function (bucketName, f) {
       if (Fiber.current) {
         var poppedTimer = Fiber.current.timers.pop();
         if (timer !== poppedTimer) {
-          console.error(
+          console.trace(
             "unexpected timer at top of stack: " + poppedTimer.id +
               "; expected: " + timer.id);
+          process.exit(1);
         }
       }
       currentEntry.pop();
